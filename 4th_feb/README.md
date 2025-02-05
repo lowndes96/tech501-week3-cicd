@@ -1,13 +1,9 @@
-# tuesday learning (retitle, once clear)
-
-- [tuesday learning (retitle, once clear)](#tuesday-learning-retitle-once-clear)
-  - [Use SSH authentication with a repo on GitHub](#use-ssh-authentication-with-a-repo-on-github)
-    - [Instructions:](#instructions)
-
-
 ## Use SSH authentication with a repo on GitHub
 
-### Instructions: 
+- [tuesday learning (retitle, once clear)](#tuesday-learning-retitle-once-clear)
+    - [Instructions:](#instructions)
+
+## Instructions: 
 ```
 Delete the key in the .ssh folder, on GitHub too, re-do everything done in the code along (see recording if needed). As you do...
 
@@ -24,3 +20,60 @@ Reminders:
 ``` 
 
 --- 
+
+## Big steps: 
+<br>
+
+* generate ssh key pair using rsa 
+* register the padlock (public key) on github 
+* on LM register private key (new step!)
+* create test repo on github 
+* push changes to the repo 
+--- 
+## steps (code-along) 
+1. generate ssh key pair using rsa: <br>
+`ssh-keygen -t rsa -b 4096 -C "your_email@example.com"` <br>
+key name: `emily-github-key` <br>
+passphrase: [leave empty] <br>
+
+2. register the padlock (public key) on github 
+
+settings > ssh + gtp keys 
+add new 
+comand line: cat emily-github-key.pub 
+paste into box 
+
+3. on LM register private key (new step!)
+
+```
+eval `ssh-agent -s`
+``` 
+should see: `Agent pid 56282`
+```
+ssh-add emily-github-key
+``` 
+should see: identity added 
+<br>
+check with: 
+```
+ssh -T git@github.com
+``` 
+then should see (screenshot 3.10)
+
+1. create test repo 
+with name: tech501-test-ssh 
+
+
+5. push changes to the repo
+screenshot 3.16 - change to ssh   <br>
+git remote add origin git@github.com:lowndes96/tech501-test-ssh.git <br>
+
+```
+echo "# tech501-ssh" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:lowndes96/tech501-ssh.git
+git push -u origin main
+``` 
