@@ -5,6 +5,7 @@
   - [Documentation of blockers](#documentation-of-blockers)
     - [creation of new ssh key for AWS](#creation-of-new-ssh-key-for-aws)
     - [Creation of database VM](#creation-of-database-vm)
+  - [Change region to ireland!](#change-region-to-ireland)
     - [copy sparta app to vm:](#copy-sparta-app-to-vm)
 
 
@@ -32,17 +33,24 @@ scp -i ~/.ssh/tech501-emily-aws-key.pem -r nodejs20-sparta-test-app ubuntu@ec2-5
 ```
 
 ### Creation of database VM 
-settings as follows: 
+Change region to ireland! 
+--- 
+**settings as follows:** 
 * name as usual 
 * Ubuntu 22.04 LTS
 * t3.micro
 * stick to defaults for virtual network and subnets (via edit button on side of box) 
 
 * ended up changing the security groups after launching, as could not find them initially, however they were easy to edit from the instance main page under security 
+  * Make sure ssh (port 22) is allowed in sg.
+  * Also need port 27017 (mongodb) allowed.
+  * unlike in azure you need to allow access between machines in the same subnet explicitly, as it is not a default in aws 
 
+* command line set up is identical to azure 
 ### copy sparta app to vm: 
 
 * ran into some errors here (add screenshots**)
+* the errors were related to the running of the app, specifically the version of node
 
 
 app installing node
