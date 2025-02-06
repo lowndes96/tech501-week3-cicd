@@ -58,6 +58,7 @@ Change region to ireland!
 
 #### inbound rules for db VM
 * need to check! 
+* should explicitly allow inbound connections from the app vm (add to security group!)
 
 ---
 

@@ -1,16 +1,22 @@
-# CICD pileline
+# CICD pipeline
 
-- [CICD pileline](#cicd-pileline)
+- [CICD pipeline](#cicd-pipeline)
   - [Our pipline](#our-pipline)
+    - [basic outline](#basic-outline)
+    - [more detail](#more-detail)
   - [Why build a pipeline?](#why-build-a-pipeline)
   - [Why jenkins?](#why-jenkins)
   - [code along - using jenkins](#code-along---using-jenkins)
   - [creating a multi-stage pipeline code along](#creating-a-multi-stage-pipeline-code-along)
     - [addition to notes](#addition-to-notes)
+    - [continous delivery vs continuous deployment](#continous-delivery-vs-continuous-deployment)
+      - [Key differences:](#key-differences)
 
 ## Our pipline 
-[text](../images/our_cicd_pipeline.drawio)
-
+### basic outline 
+![basic pipeline detail](../images/our_cicd_pipeline.drawio.png)
+### more detail 
+![complex pipeline detail](../images/jenikins-cicd-pipeline.drawio.png)
 ## Why build a pipeline? 
 * making devs life easier 
 * quickly get changes to end users 
@@ -49,3 +55,18 @@
 
 ### addition to notes
 * is jenkins just for cicd pielines? 
+
+### continous delivery vs continuous deployment
+Continuous delivery automates the software release process up to the point of a production environment, requiring a manual approval to deploy to live production, while continuous deployment fully automates the entire process, deploying every change to production automatically without manual intervention; essentially, continuous delivery is a stepping stone to the more aggressive continuous deployment approach where every successful build is automatically released to production. 
+<br>
+
+#### Key differences: 
+**Manual approval:** <br>
+* Continuous delivery includes a manual approval step before deploying to production, whereas continuous deployment does not.
+**Risk level:** <br>
+* Continuous deployment carries a higher risk of deploying potentially unstable code to production due to its fully automated nature, while continuous delivery provides a safety net with manual review. 
+**When to use each:** <br>
+**Continuous delivery:** <br>
+* Suitable for applications where a higher level of control is needed before deploying to production, such as highly regulated industries or critical systems. 
+**Continuous deployment:** <br>
+* Ideal for applications with robust automated testing and monitoring where rapid iteration and frequent releases are desired. 
