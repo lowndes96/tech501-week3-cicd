@@ -6,11 +6,9 @@
     - [more detail](#more-detail)
   - [Why build a pipeline?](#why-build-a-pipeline)
   - [Why jenkins?](#why-jenkins)
-  - [code along - using jenkins](#code-along---using-jenkins)
-  - [creating a multi-stage pipeline code along](#creating-a-multi-stage-pipeline-code-along)
-    - [addition to notes](#addition-to-notes)
-    - [continous delivery vs continuous deployment](#continous-delivery-vs-continuous-deployment)
-      - [Key differences:](#key-differences)
+- [Code along - using jenkins](#code-along---using-jenkins)
+  - [Code along - creating a multi-stage pipeline](#code-along---creating-a-multi-stage-pipeline)
+    - [setting up ssh key (move)](#setting-up-ssh-key-move)
 
 ## Our pipline 
 ### basic outline 
@@ -28,7 +26,7 @@
 * has powerful plugins 
 * great to help understand the CICD pipeline 
 
-## code along - using jenkins 
+# Code along - using jenkins 
 1. aws instances - start servers (ramon will do every day we are using, we are now using much bigger servers than previously on azure)
 2. Group split between server 1 (http://34.254.6.118:8080) and server 2 ( http://52.31.15.176:8080) 
     * I'm in group 1 
@@ -47,26 +45,14 @@
    ![build-now-img](code-along-images-am/build-now.png)
 9. check output 
 
-## creating a multi-stage pipeline code along 
+## Code along - creating a multi-stage pipeline  
 * can link jobs to create a muti-stage pipeline 
 
 1. go to job 1 
 2. configure > post build actions 
 
-### addition to notes
-* is jenkins just for cicd pielines? 
-
-### continous delivery vs continuous deployment
-Continuous delivery automates the software release process up to the point of a production environment, requiring a manual approval to deploy to live production, while continuous deployment fully automates the entire process, deploying every change to production automatically without manual intervention; essentially, continuous delivery is a stepping stone to the more aggressive continuous deployment approach where every successful build is automatically released to production. 
-<br>
-
-#### Key differences: 
-**Manual approval:** <br>
-* Continuous delivery includes a manual approval step before deploying to production, whereas continuous deployment does not.
-**Risk level:** <br>
-* Continuous deployment carries a higher risk of deploying potentially unstable code to production due to its fully automated nature, while continuous delivery provides a safety net with manual review. 
-**When to use each:** <br>
-**Continuous delivery:** <br>
-* Suitable for applications where a higher level of control is needed before deploying to production, such as highly regulated industries or critical systems. 
-**Continuous deployment:** <br>
-* Ideal for applications with robust automated testing and monitoring where rapid iteration and frequent releases are desired. 
+** add screenshots from this task 
+### setting up ssh key (move)
+ssh-keygen -t rsa -b 4096 -C myemail 
+promted to add file name: emily-key-purpose
+no passphrase, hit enter twice 

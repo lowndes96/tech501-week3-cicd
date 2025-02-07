@@ -12,6 +12,8 @@
     - [app VM](#app-vm)
       - [copy sparta app to vm:](#copy-sparta-app-to-vm)
       - [installations on app VM](#installations-on-app-vm)
+        - [steps to set up app vm in command line (without db for now)](#steps-to-set-up-app-vm-in-command-line-without-db-for-now)
+      - [script for app:](#script-for-app)
 
 
 ## task overview
@@ -86,7 +88,40 @@ scp -i ~/.ssh/tech501-emily-aws-key.pem -r nodejs20-sparta-test-app ubuntu@ec2-5
 
 Think the error was specifically to do with my installing of node (should have used the code below): 
 ```
-app installing node
+#app installing node
 sudo DEBIAN_FRONTEND=noninteractive bash -c "curl -fsSL https://deb.nodesource.com/setup_20.x | bash -" && \
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
 ``` 
+
+##### steps to set up app vm in command line (without db for now)
+
+#### script for app:
+
+```
+#start with update and upgrade of all pkg
+#sudo apt update -y
+#sudo apt-get upgrade -y 
+sudo DEBIAN_FRONTEND=noninteractive apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
+# install and enable nginx
+sudo apt install nginx -y 
+sudo systemctl enable nginx 
+# restart nginx
+sudo systemctl restart nginx
+# check it's working 
+sudo systemctl status nginx 
+# need to script downloading the app 
+## git clone <endpoint for remote repo> repo
+#app installing node
+sudo DEBIAN_FRONTEND=noninteractive bash -c "curl -fsSL https://deb.nodesource.com/setup_20.x | bash -" && \
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
+#cd into app file, 
+cd /repo/app
+sudo npm install pm2 -g 
+npm install
+# restart nginx
+sudo systemctl restart nginx
+#then start in background
+pm2 start app.js
+``` 
+
+sudo DEBIAN_FRONTEND=noninteractive apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
