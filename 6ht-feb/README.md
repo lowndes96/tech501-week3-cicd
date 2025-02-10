@@ -4,8 +4,8 @@
 - [task instructions:](#task-instructions)
   - [Job 1 set up](#job-1-set-up)
     - [setting up access to github via ssh keys](#setting-up-access-to-github-via-ssh-keys)
-      - [in github](#in-github)
-      - [in jenkins](#in-jenkins)
+      - [In github:](#in-github)
+      - [In jenkins:](#in-jenkins)
     - [setting up the webhook](#setting-up-the-webhook)
     - [dev branch set up](#dev-branch-set-up)
       - [on command line](#on-command-line)
@@ -17,6 +17,8 @@
     - [way 2: using jenkins plugins](#way-2-using-jenkins-plugins)
   - [Job 3 set up](#job-3-set-up)
     - [Shell Script:](#shell-script)
+      - [Command to move the app stored within jenkins (tested) to the VM home directory](#command-to-move-the-app-stored-within-jenkins-tested-to-the-vm-home-directory)
+        - [ssh into machine and carrys out indented commands](#ssh-into-machine-and-carrys-out-indented-commands)
       - [shell script to verify](#shell-script-to-verify)
 - [Questions - ask or test with code](#questions---ask-or-test-with-code)
 
@@ -61,11 +63,11 @@ Steps:
 
 ### setting up access to github via ssh keys
 
-#### in github
+#### In github:
 ![alt text](jenkins-task-images/key-for-github.png)
 * within the repository, go to settings and click on deploy keys
 * add the public key created for this task into the repo
-#### in jenkins 
+#### In jenkins:
 * under source code management tick git
 * add the repo 
 ![alt text](jenkins-task-images/add-jenkins-cedentiL.png)
@@ -133,10 +135,16 @@ git push origin main
 
 
 ### Shell Script: 
-```linux 
-#command to move the app stored within jenkins (tested) to the VM home directory
+* as aws was used the public ip will change each time a new instance is started - could declare a public IP variable at the top to make changing this easier 
+#### Command to move the app stored within jenkins (tested) to the VM home directory
+* used scp command to move files from job-2 (merge) into the VM 
+* key does not need to be included in command as it is already an enviromnment variable being used 
+
+```
 scp -o StrictHostKeyChecking=no -r /var/jenkins/workspace/emily-job1-ci-merge/app/ ubuntu@ec2-3-253-101-19.eu-west-1.compute.amazonaws.com:/home/ubuntu
-# ssh into machine and carrys out indented commands 
+``` 
+##### ssh into machine and carrys out indented commands 
+```
 ssh ubuntu@ec2-3-253-101-19.eu-west-1.compute.amazonaws.com << 'EOF'
   # Delete previous directory
   sudo rm -rf /repo/app
@@ -161,4 +169,16 @@ EOF
 
 # Questions - ask or test with code
 * job 1/2 - where are those shell commands happening, is it 'in' the github or on a copy moved into jenkins server??
-* can I just copy across updated files 
+* can I just copy across updated files directly to root? 
+* can make an alias
+```
+function gitk() {
+        if [ -z "$1" ]; then
+        echo "Please provide a commit message."
+        return 1
+    fi
+    git add .
+    git commit -m "$1"
+    git push
+}
+``` 
