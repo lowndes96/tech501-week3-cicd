@@ -14,7 +14,11 @@
   - [Job 2 set up](#job-2-set-up)
     - [way 1: execute shell](#way-1-execute-shell)
       - [job 2 working](#job-2-working)
+    - [way 2: using jenkins plugins](#way-2-using-jenkins-plugins)
   - [Job 3 set up](#job-3-set-up)
+    - [Shell Script:](#shell-script)
+      - [shell script to verify](#shell-script-to-verify)
+- [Questions - ask or test with code](#questions---ask-or-test-with-code)
 
 
 # task instructions: 
@@ -79,7 +83,15 @@ Steps:
 ### other jenkins set-up 
 * github project needs to jave the project https url, with a `/` at the end - jenkins is fussy!
 ![alt text](jenkins-task-images/link-repo-jenkins.png)
+**Build Environment**
 ![alt text](jenkins-task-images/build-env.png)
+**Build steps**
+* execute shell
+```
+cd app
+npm install 
+npm test
+``` 
 ![alt text](jenkins-task-images/build-steps.png)
 ![alt text](jenkins-task-images/build-trigger-job1.png)
 ![alt text](<jenkins-task-images/disgard old builds.png>)
@@ -97,15 +109,38 @@ git push origin main
 ``` 
 #### job 2 working
 ![alt text](jenkins-task-images/job2-working.png)
-## Job 3 set up 
 
-Shell script: 
-```
+### way 2: using jenkins plugins 
+* under source control > git > add > additional behaviours 
+* this is to update main branch to what is in github, to cover instances of multiple updates at the same time 
+* setup: 
+  * name of repo = origin (default name) 
+  * branch to merge to = main 
+  * default merge stratagey 
+  * fastforward mode (ff) - only adds new updates to main 
+![alt text](job2.2+job3/job2-merge-b4-build.png)
+* post build step of github action > push only if build suceeds, pushes changes from the dev branch to main 
+![alt text](job2.2+job3/job2-post-build-push.png)
+* only want updates to occur if the merge to main above happened correctly. 
+* there are no 'main build' steps here, as the pre and post build functionality are able to complete this job alone
+## Job 3 set up 
+* use of usual disgard old builds and github project steup (github may be uneccisary here? - check)
+![alt text](job2.2+job3/job3-setup1.png)
+* dont need any source code management of the github here - all done in previous steps 
+![alt text](job2.2+job3/job3-setup-2.png)
+* under build env - need to add the ssh key to access the aws vm 
+![alt text](job2.2+job3/job3-keysetup.png)
+
+
+### Shell Script: 
+```linux 
+#command to move the app stored within jenkins (tested) to the VM home directory
 scp -o StrictHostKeyChecking=no -r /var/jenkins/workspace/emily-job1-ci-merge/app/ ubuntu@ec2-3-253-101-19.eu-west-1.compute.amazonaws.com:/home/ubuntu
+# ssh into machine and carrys out indented commands 
 ssh ubuntu@ec2-3-253-101-19.eu-west-1.compute.amazonaws.com << 'EOF'
   # Delete previous directory
   sudo rm -rf /repo/app
-  # Move the app directory
+  # Move the app directory to folders in root
   sudo mv /home/ubuntu/app /repo/app
   # Restart Nginx
   sudo systemctl restart nginx
@@ -114,8 +149,16 @@ ssh ubuntu@ec2-3-253-101-19.eu-west-1.compute.amazonaws.com << 'EOF'
   # start app
   npm install 
   sudo npm install pm2 -g 
-  pm2 stop appjs
+  pm2 stop app.js
   pm2 start app.js 
 
 EOF
 ``` 
+#### shell script to verify 
+* eliminate last few lines of code - are they neccisary - not sure? 
+* try moving app directly to root in original command (may be a permissions issue)
+* learn more about the 'EOF' script format [EOF explanation](https://kodekloud.com/blog/eof-bash/)
+
+# Questions - ask or test with code
+* job 1/2 - where are those shell commands happening, is it 'in' the github or on a copy moved into jenkins server??
+* can I just copy across updated files 
