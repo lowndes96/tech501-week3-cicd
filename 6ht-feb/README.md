@@ -145,22 +145,23 @@ scp -o StrictHostKeyChecking=no -r /var/jenkins/workspace/emily-job1-ci-merge/ap
 ``` 
 ##### ssh into machine and carrys out indented commands 
 ```
-ssh ubuntu@ec2-3-253-101-19.eu-west-1.compute.amazonaws.com << 'EOF'
+scp -o StrictHostKeyChecking=no -r /var/jenkins/workspace/emily-job1-ci-merge/app/ ubuntu@ec2-3-253-255-127.eu-west-1.compute.amazonaws.com:/home/ubuntu
+ssh ec2-3-253-255-127.eu-west-1.compute.amazonaws.com << 'EOF'
   # Delete previous directory
   sudo rm -rf /repo/app
-  # Move the app directory to folders in root
+  # Move the app directory
   sudo mv /home/ubuntu/app /repo/app
   # Restart Nginx
   sudo systemctl restart nginx
+  echo 'nginx restarted'
   #move to app folder 
   cd /repo/app
+  echo 'in app folder'
   # start app
-  npm install 
-  sudo npm install pm2 -g 
-  pm2 stop app.js
+  npm install  
   pm2 start app.js 
 
-EOF
+EOF 
 ``` 
 #### shell script to verify 
 * eliminate last few lines of code - are they neccisary - not sure? 
