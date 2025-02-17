@@ -21,6 +21,8 @@
         - [ssh into machine and carrys out indented commands](#ssh-into-machine-and-carrys-out-indented-commands)
       - [shell script to verify](#shell-script-to-verify)
 - [Questions - ask or test with code](#questions---ask-or-test-with-code)
+  - [code for presentation demo](#code-for-presentation-demo)
+        - [ssh into machine and carrys out indented commands](#ssh-into-machine-and-carrys-out-indented-commands-1)
 
 
 # task instructions: 
@@ -121,12 +123,12 @@ git push origin main
   * default merge stratagey 
   * fastforward mode (ff) - only adds new updates to main 
 ![alt text](job2.2+job3/job2-merge-b4-build.png)
-* post build step of github action > push only if build suceeds, pushes changes from the dev branch to main 
+* post build step of github action > push only if build succeeds, pushes changes from the dev branch to main 
 ![alt text](job2.2+job3/job2-post-build-push.png)
 * only want updates to occur if the merge to main above happened correctly. 
 * there are no 'main build' steps here, as the pre and post build functionality are able to complete this job alone
 ## Job 3 set up 
-* use of usual disgard old builds and github project steup (github may be uneccisary here? - check)
+* use of usual disgard old builds and github project steup
 ![alt text](job2.2+job3/job3-setup1.png)
 * dont need any source code management of the github here - all done in previous steps 
 ![alt text](job2.2+job3/job3-setup-2.png)
@@ -140,12 +142,15 @@ git push origin main
 * used scp command to move files from job-2 (merge) into the VM 
 * key does not need to be included in command as it is already an enviromnment variable being used 
 
-```
+```shell 
+#copy and replace app code 
 scp -o StrictHostKeyChecking=no -r /var/jenkins/workspace/emily-job1-ci-merge/app/ ubuntu@ec2-3-253-101-19.eu-west-1.compute.amazonaws.com:/home/ubuntu
 ``` 
 ##### ssh into machine and carrys out indented commands 
-```
+```shell 
 scp -o StrictHostKeyChecking=no -r /var/jenkins/workspace/emily-job1-ci-merge/app/ ubuntu@ec2-3-253-255-127.eu-west-1.compute.amazonaws.com:/home/ubuntu
+
+
 ssh ec2-3-253-255-127.eu-west-1.compute.amazonaws.com << 'EOF'
   # Delete previous directory
   sudo rm -rf /repo/app
@@ -182,4 +187,30 @@ function gitk() {
     git commit -m "$1"
     git push
 }
+``` 
+
+
+## code for presentation demo 
+
+```shell 
+#copy and replace app code 
+scp -o StrictHostKeyChecking=no -r /var/jenkins/workspace/emily-job2-ci-merge/app/ ubuntu@ec2-3-253-101-19.eu-west-1.compute.amazonaws.com:/repo/app
+``` 
+##### ssh into machine and carrys out indented commands 
+```shell 
+
+## ssh into VM then run this multi-line script 
+ssh ec2-3-253-255-127.eu-west-1.compute.amazonaws.com << 'EOF'
+
+  # Restart Nginx
+  sudo systemctl restart nginx
+
+  #move to app folder 
+  cd /repo/app
+
+  # start /restart app
+    npm install
+    pm2 restart app || pm2 start app.js 
+
+EOF 
 ``` 
