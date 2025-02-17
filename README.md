@@ -6,3 +6,4 @@
 * [CI/CD basics](5th_feb/README.md)
 * [setting up a CICD pipeline using Jenkins -steps ](6ht-feb/README.md) <br>
 * [Assesment prep](assesment-prep/README.md) <br>
+* [creating a jenkins server](creating_jenkins_server/README.md)
